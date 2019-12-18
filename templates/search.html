@@ -17,9 +17,9 @@
 </head>
 <body>
     <div class="container-fluid">
-        <div class="row  align-items-center">
+        <div class="row align-items-center" style="margin-top: 2%">
             <div class="col parent" style="height: 100px">
-                <button type="button" class="btn btn-primary child">按物品名搜索信息</button>
+                <button class="btn btn-primary child" onclick="search_by_item()">按物品名搜索信息</button>
             </div>
             <div class="col parent" style="height: 100px">
                 <button type="button" class="btn btn-primary child">按物品名修改记录</button>
@@ -31,18 +31,55 @@
                 <button type="button" class="btn btn-primary child">添加新购买记录</button>
             </div>
         </div>
-        <div class="row" >
+        <div id="search_by_item" class="row" style="display: none;margin-left: 10%;margin-right: 10%">
+            <div class="row">
+                <form action="" method="post" class="form-inline">
+                    <input type="text" name="item_name" class="form-control" placeholder="输入物品名">
+                    <button type="button" class="btn btn-primary">搜索</button>
+                </form>
+            </div>
+            <div class="row">
+                <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                              <th>名称</th>
+                              <th>内地官方价</th>
+                              <th>香港官方价</th>
+                              <th>其他人价格</th>
+                              <th>我们的卖价</th>
+                              <th>照片</th>
+                              <th><a href="/hkgo/showrecords/?name={{data.name}}">详细购买记录</a></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{data.name}}</td>
+                                <td>{{data.cn_official_price}}</td>
+                                <td>{{data.hk_official_price}}</td>
+                                <td>{{data.other_people_price}}</td>
+                                <td>{{data.our_price}}</td>
+                                <td>{{data.pic}}</td>
+                            </tr>
+                        </tbody>
+                </table>
+            </div>
+            <div class="row" disabled="none"></div>
+        </div>
+        <div id="modify_by_item" class="row" disabled="none">
 
         </div>
-        <div class="row">
+        <div id="add_new_item" class="row" disabled="none">
 
         </div>
-        <div class="row">
-
-        </div>
-        <div class="row">
+        <div id="add_new_record" class="row" disabled="none">
 
         </div>
     </div>
 </body>
+<script>
+    function search_by_item() {
+        var elem = document.getElementById('search_by_item');
+        elem.style.display = "block";
+    }
+</script>
 </html>
