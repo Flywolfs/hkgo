@@ -19,7 +19,7 @@
     <div class="container-fluid">
         <div class="row align-items-center" style="margin-top: 2%">
             <div class="col parent" style="height: 100px">
-                <button class="btn btn-primary child" onclick="search_by_item()">按物品名搜索信息</button>
+                <button class="btn btn-primary child" onclick="search_by_item_show()">按物品名搜索信息</button>
             </div>
             <div class="col parent" style="height: 100px">
                 <button type="button" class="btn btn-primary child">按物品名修改记录</button>
@@ -34,9 +34,10 @@
         <div id="search_by_item" class="row" style="display: none;margin-left: 10%;margin-right: 10%">
             <div class="row">
                 <form action="" method="post" class="form-inline">
-                    <input type="text" name="item_name" class="form-control" placeholder="输入物品名">
-                    <button type="button" class="btn btn-primary">搜索</button>
+                    <input type="text" id="item_name" class="form-control" placeholder="输入物品名">
+                    <button type="button" class="btn btn-primary" onclick="search_by_item()">搜索</button>
                 </form>
+
             </div>
             <div class="row">
                 <table class="table table-bordered">
@@ -51,15 +52,8 @@
                               <th><a href="/hkgo/showrecords/?name={{data.name}}">详细购买记录</a></th>
                           </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>{{data.name}}</td>
-                                <td>{{data.cn_official_price}}</td>
-                                <td>{{data.hk_official_price}}</td>
-                                <td>{{data.other_people_price}}</td>
-                                <td>{{data.our_price}}</td>
-                                <td>{{data.pic}}</td>
-                            </tr>
+                        <tbody id="item_detail">
+
                         </tbody>
                 </table>
             </div>
@@ -76,10 +70,26 @@
         </div>
     </div>
 </body>
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script>
-    function search_by_item() {
+    function search_by_item_show() {
         var elem = document.getElementById('search_by_item');
         elem.style.display = "block";
+    }
+
+    function search_by_item(){
+        var item_name = document.getElementById("item_name").value;
+        var item_detail = document.getElementById("item_detail");
+        $.ajax({
+            url:"/hkgo/checkprice/",
+            type:"POST",
+            data:{item_name:item_name},
+            dataType:"json",
+            success:function (result) {
+                var html = "<tr><td>"+result["name"]+"</td><td>"+result["cn_official_price"]+"</td><td>"+result["hk_official_price"]+"</td><td>"+result["other_people_price"]+"</td><td>"+result["our_price"]+"</td><td>"+result["pic"]+"</td></tr>";
+                item_detail.innerHTML = html;
+            }
+        })
     }
 </script>
 </html>
